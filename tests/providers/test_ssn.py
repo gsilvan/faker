@@ -2,7 +2,7 @@ import random
 import re
 import unittest
 
-from datetime import datetime
+from datetime import date, datetime
 from itertools import cycle
 from typing import Pattern, Tuple
 from unittest import mock
@@ -200,6 +200,18 @@ class TestDeAT(unittest.TestCase):
     def test_vat_id(self):
         for _ in range(100):
             assert re.search(r"^ATU\d{8}$", self.fake.vat_id())
+
+class TestDeDe(unittest.TestCase):
+    def setUp(self):
+        self.fake = Faker("de_DE")
+        Faker.seed(0)
+
+    def test_random_etin(self):
+        for _ in range(100):
+            assert re.search(r"^[A-Z]{8}\d{2}[A-M]\d{2}[A-Z]$", self.fake.etin())
+
+    def test_specific_etin(self):
+        assert self.fake.etin("Thomas", "Schmidt", date(1959, 11, 17))
 
 
 class TestElCY(unittest.TestCase):
